@@ -1,7 +1,4 @@
 import PokeAPI from 'pokemongo-api';
-import env from 'node-env-file'
-
-env(__dirname + '/.env');
 
 var username = 'USER'
 var password =  'PASS'
