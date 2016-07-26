@@ -30,28 +30,33 @@ async function init() {
   while( true ){
     let cells = await Poke.GetMapObjects()
     for(let cell of cells) {
+
       // catchable pokemons from here?
-      if (cell.catchable_pokemons.length > 0){
-        cell.catchable_pokemons.map(pokemon => {
-          pokemon.encounterAndCatch()
-        })
+      for (let pokemon of cell.catchable_pokemons) {
+        // await pokemon.encounterAndCatch().catch(err => console.log(err))
       }
 
       // wild pokemons
-      if (cell.wild_pokemons.length > 0){
+      for (let pokemon of cell.wild_pokemons) {
         // we have wild pokemons, you cannot catch these..
       }
 
       // forts
-      if (cell.forts.length > 0){
-        // forts..
-        for (let fort of cell.forts){
-          if (fort.isCheckpoint)
-            fort.search()
+      for (let fort of cell.forts) {
+        // Only do things close to you
+        if(fort.withinRange){
+          // Collect pokestop rewards
+          if (fort.isCheckpoint && !fort.cooldown) {
+            await fort.search()
+          }
+
+          if(fort.isGym) {
+            // Set a pokemon here if it's your team and there are spots open
+          }
         }
       }
     }
-    
+
     //just walk a little (1 - 15 meters..)
     await Poke.player.walkAround()
 
